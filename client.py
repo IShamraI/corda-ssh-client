@@ -7,10 +7,11 @@ import paramiko
 
 # transaction = 'flow start net.corda.finance.flows.CashIssueAndPaymentFlow amount: "100 CHF", issueRef: 123, recipient: "O=Alice, L=London, C=GB", anonymous: false, notary: "OU=R3 Corda, O=R3 LTD, L=London, C=GB"'
 actions = {
-    'cash_issue_flow' : 'flow start CashIssueFlow amount: {amount} USD, issuerBankPartyRef: {issuer_ref}, notary: "{notary}"',
+    'cash_issue_flow' : 'flow start CashIssueFlow amount: {amount} {currency}, issuerBankPartyRef: {issuer_ref}, notary: "{notary}"',
     'vault_query' : 'run vaultQuery contractStateType: net.corda.finance.contracts.asset.Cash$State',
-    'cash_payment_flow' : 'flow start CashPaymentFlow amount: {amount} USD, recipient: {recipient}',
-    'cash_exit_flow' : 'flow start CashExitFlow amount: {amount} USD, issuerRef: {issuer_ref}',
+    'cash_issue_and_payment_flow' : 'flow start net.corda.finance.flows.CashIssueAndPaymentFlow amount: {amount} {currency}, issueRef: {issuer_ref}, recipient: {recipient}, anonymous: false, notary: "{notary}"',
+    'cash_payment_flow' : 'flow start CashPaymentFlow amount: {amount} {currency}, recipient: {recipient}',
+    'cash_exit_flow' : 'flow start CashExitFlow amount: {amount} {currency}, issuerRef: {issuer_ref}',
     'graceful_shutdown' : 'run gracefulShutdown',
     'shutdown' : 'shutdown',
 }
@@ -24,6 +25,7 @@ def main():
     options.add_option('--repeat_count', type='int', default=1, help='repeat_count')
     options.add_option('--action', type='str', default='cash_issue_flow', help='action')
     options.add_option('--amount', type='float', default=55.00, help='amount')
+    options.add_option('--currency', type='str', default='USD', help='currency')
     options.add_option('--recipient', type='str', default='Party2', help='recipient')
     options.add_option('--issuer_ref', type='str', default='1234', help='issuer_ref')
     options.add_option('--notary', type='str', default='Notary', help='notary')
@@ -32,6 +34,7 @@ def main():
 
     params = {
         'amount': opts.amount,
+        'currency': opts.currency,
         'issuer_ref': opts.issuer_ref,
         'notary': opts.notary,
         'recipient': opts.recipient,
