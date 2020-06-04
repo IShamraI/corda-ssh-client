@@ -23,7 +23,7 @@ def main():
     options.add_option('--username', type='str', default='demou', help='username')
     options.add_option('--password', type='str', default='demop', help='password')
     options.add_option('--repeat_count', type='int', default=1, help='repeat_count')
-    options.add_option('--action', type='str', default='cash_issue_flow', help='action')
+    options.add_option('--action', type='str', default='cash_issue_flow', help='action ({0})'.format(', '.join([ a for a in actions.keys()])))
     options.add_option('--amount', type='float', default=55.00, help='amount')
     options.add_option('--currency', type='str', default='USD', help='currency')
     options.add_option('--recipient', type='str', default='Party2', help='recipient')
